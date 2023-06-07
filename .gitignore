@@ -47,6 +47,7 @@
 *.cmd
 .tmp_versions/
 build/
+test/
 modules.order
 Module.symvers
 Mkfile.old

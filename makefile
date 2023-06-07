@@ -2,7 +2,7 @@ CC := gcc
 CFLAGS := -Wall -Wextra -g
 SRC_DIR := src
 BUILD_DIR := build
-TARGET := $(BUILD_DIR)/program
+TARGET := $(BUILD_DIR)/truedrive
 
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
@@ -23,4 +23,4 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 run: $(TARGET)
-	$(TARGET)
+	$(TARGET) $(MAKECMDGOALS)
