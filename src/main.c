@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "binary.h"
+
 
 int main(int argc, char *argv[]) {
     
@@ -12,19 +15,13 @@ int main(int argc, char *argv[]) {
     const char *filename = argv[1];
 
     // Opening the file
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Error opening the file.\n");
-        return 1;
+    long file_size;
+    unsigned char *buffer = readBinaryFile(filename, &file_size);
+
+    if (buffer != NULL) {
+        processBinaryData(buffer, file_size);
+        free(buffer);
     }
-    
-    // Printing content
-    char ch;
-    while ((ch = fgetc(file)) != EOF) {
-        putchar(ch);
-    }
-    
-    // Concluding
-    fclose(file);
+
     return 0;
 }
