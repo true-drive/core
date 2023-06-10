@@ -3,11 +3,14 @@
 #include <string.h>
 
 #include "file.h"
+#include "debug.h"
 #include "binary.h"
 #include "bitmap.h"
 
 int main(int argc, char *argv[])
 {
+    debug("Init - Starting...");
+
     // Validating arguments
     if (argc != 2)
     {
@@ -17,6 +20,7 @@ int main(int argc, char *argv[])
 
     // Fetching the passed input file path
     const char *targetFile = argv[1];
+    debug("Init - Targeted file '%s'", targetFile);
 
     // Getting the file name
     const size_t fileNameSize = sizeof(char) * strlen(targetFile);
@@ -25,24 +29,15 @@ int main(int argc, char *argv[])
 
     // Opening the file
     long file_size;
-    unsigned char *buffer = readBinaryFile(targetFile, &file_size);
-
-    // Creating binary dump file name
-    char *binaryName = malloc(fileNameSize);
-    strcpy(binaryName, fileName);
-    strcat(binaryName, ".bin");
+    unsigned char *buffer = readFile(targetFile, &file_size);
 
     // Writing the binary dump
-    unsigned char *binary = writeBinaryFile(binaryName, buffer);
-
-    // Creating bitmap dump file name
-    char *bitmapName = malloc(fileNameSize);
-    strcpy(bitmapName, fileName);
-    strcat(bitmapName, ".bmp");
+    unsigned char *binary = writeBinary(fileName, buffer);
 
     // Writing the bitmap dump
-    unsigned char *pixels = writeBitmapFile(bitmapName, binary);
+    unsigned char *pixels = writeBitmaps(fileName, binary);
 
+    debug("End - Clean-up");
     free(buffer);
     free(binary);
     free(pixels);
