@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "debug.h"
 #include "binary.h"
 
 unsigned char *charToBinary(unsigned char byte)
@@ -22,41 +23,17 @@ unsigned char *charToBinary(unsigned char byte)
     return binary;
 }
 
-unsigned char *readBinaryFile(const char *fileName, long *size)
+unsigned char *writeBinary(const char *fileName, const unsigned char *content)
 {
-    // Opening the file
-    FILE *file = fopen(fileName, "rb");
-    if (file == NULL)
-    {
-        printf("Error opening the file.\n");
-        return NULL;
-    }
+    debug("Binary - Writing binary dump...");
 
-    // Getting the content's length
-    fseek(file, 0, SEEK_END);
-    *size = ftell(file);
-    fseek(file, 0, SEEK_SET);
+    // Creating binary dump file name
+    char *binaryName = malloc(strlen(fileName));
+    strcpy(binaryName, fileName);
+    strcat(binaryName, ".bin");
 
-    // Allocating memory to dump the contents to
-    unsigned char *buffer = (unsigned char *)malloc(*size * sizeof(unsigned char));
-    if (buffer == NULL)
-    {
-        printf("Memory allocation failed.\n");
-        fclose(file);
-        return NULL;
-    }
-
-    // Storing the file's content into memory
-    fread(buffer, sizeof(unsigned char), *size, file);
-    fclose(file);
-
-    return buffer;
-}
-
-unsigned char *writeBinaryFile(const char *fileName, const unsigned char *content)
-{
     // Opening the file in write mode
-    FILE *file = fopen(fileName, "w");
+    FILE *file = fopen(binaryName, "w");
     if (!file)
     {
         printf("Failed to open file for writing.\n");
@@ -78,5 +55,9 @@ unsigned char *writeBinaryFile(const char *fileName, const unsigned char *conten
 
     // Closing the file
     fclose(file);
+
+    debug("Binary - Binary dumped to file '%s'", binaryName);
+    debug("Binary - Binary length %d", strlen((char *)binary));
+
     return binary;
 }
