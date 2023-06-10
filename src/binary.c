@@ -22,10 +22,10 @@ unsigned char *charToBinary(unsigned char byte)
     return binary;
 }
 
-unsigned char *readBinaryFile(const char *filename, long *size)
+unsigned char *readBinaryFile(const char *fileName, long *size)
 {
     // Opening the file
-    FILE *file = fopen(filename, "rb");
+    FILE *file = fopen(fileName, "rb");
     if (file == NULL)
     {
         printf("Error opening the file.\n");
@@ -53,10 +53,10 @@ unsigned char *readBinaryFile(const char *filename, long *size)
     return buffer;
 }
 
-unsigned char *writeBinaryFile(const char *filename, const unsigned char *content)
+unsigned char *writeBinaryFile(const char *fileName, const unsigned char *content)
 {
     // Opening the file in write mode
-    FILE *file = fopen(filename, "w");
+    FILE *file = fopen(fileName, "w");
     if (!file)
     {
         printf("Failed to open file for writing.\n");

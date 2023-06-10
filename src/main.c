@@ -4,6 +4,7 @@
 
 #include "file.h"
 #include "binary.h"
+#include "bitmap.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,8 +35,17 @@ int main(int argc, char *argv[])
     // Writing the binary dump
     unsigned char *binary = writeBinaryFile(binaryName, buffer);
 
+    // Creating bitmap dump file name
+    char *bitmapName = malloc(fileNameSize);
+    strcpy(bitmapName, fileName);
+    strcat(bitmapName, ".bmp");
+
+    // Writing the bitmap dump
+    unsigned char *pixels = writeBitmapFile(bitmapName, binary);
+
     free(buffer);
     free(binary);
+    free(pixels);
 
     return 0;
 }
