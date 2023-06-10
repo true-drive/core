@@ -21,16 +21,20 @@ void processBinaryData(const unsigned char *buffer, long size) {
 }
 
 unsigned char* readBinaryFile(const char *filename, long *size) {
+
+    // Opening the file
     FILE *file = fopen(filename, "rb");
     if (file == NULL) {
         printf("Error opening the file.\n");
         return NULL;
     }
 
+    // Getting the content's length
     fseek(file, 0, SEEK_END);
     *size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
+    // Allocating memory to dump the contents to
     unsigned char *buffer = (unsigned char *)malloc(*size * sizeof(unsigned char));
     if (buffer == NULL) {
         printf("Memory allocation failed.\n");
@@ -38,6 +42,7 @@ unsigned char* readBinaryFile(const char *filename, long *size) {
         return NULL;
     }
 
+    // Storing the file's content into memory
     fread(buffer, sizeof(unsigned char), *size, file);
     fclose(file);
 
