@@ -3,6 +3,7 @@
 
 void printBinary(unsigned char byte);
 void processBinaryData(const unsigned char *buffer, long size);
-unsigned char* readBinaryFile(const char *filename, long *size);
+void writeBinaryFile(const char *filename, const unsigned char *content);
+unsigned char *readBinaryFile(const char *filename, long *size);
 
 #endif
