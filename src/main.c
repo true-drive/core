@@ -32,8 +32,10 @@ int main(int argc, char *argv[])
     strcat(binaryName, ".bin");
 
     // Writing the binary dump
-    writeBinaryFile(binaryName, buffer);
+    unsigned char *binary = writeBinaryFile(binaryName, buffer);
 
     free(buffer);
+    free(binary);
+
     return 0;
 }
