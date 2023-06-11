@@ -28,28 +28,20 @@ int main(int argc, char *argv[])
     removeExtension(targetFile, fileName);
 
     // Opening the file
-    long file_size;
-    unsigned char *buffer = readFile(targetFile, &file_size);
+    long bufferSize;
+    unsigned char *buffer = readFile(targetFile, &bufferSize);
     if (buffer == NULL) {
         return 1;
     }
 
     // Writing the binary dump
-    unsigned char *binary = writeBinary(fileName, buffer);
-    if (binary == NULL) {
-        return 1;
-    }
+    writeBinary(fileName, buffer, bufferSize);
 
     // Writing the bitmap dump
-    unsigned char *pixels = writeBitmaps(fileName, binary);
-     if (pixels == NULL) {
-        return 1;
-    }
+    writeBitmaps(fileName, buffer, bufferSize);
 
     debug("End - Clean-up");
     free(buffer);
-    free(binary);
-    free(pixels);
 
     return 0;
 }

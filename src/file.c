@@ -44,7 +44,7 @@ unsigned char *readFile(const char *fileName, long *size)
   fseek(file, 0, SEEK_SET);
 
   // Allocating memory to dump the contents to
-  unsigned char *buffer = (unsigned char *)malloc(*size * sizeof(unsigned char));
+  unsigned char *buffer = (unsigned char *)malloc(*size * sizeof(unsigned char) * 8);
   if (buffer == NULL)
   {
     debug("[Error] File - Memory allocation failed");
@@ -52,12 +52,28 @@ unsigned char *readFile(const char *fileName, long *size)
     return NULL;
   }
 
-  // Storing the file's content into memory
-  fread(buffer, sizeof(unsigned char), *size, file);
+  unsigned char byte;
+  size_t bytesRead = 0;
+  long bitIndex = 0;
+
+  // Reading file byte by byte and extracting bits
+  while (fread(&byte, sizeof(unsigned char), 1, file) == 1)
+  {
+    for (int i = 7; i >= 0; i--)
+    {
+      unsigned char bit = (byte >> i) & 1;
+      buffer[bitIndex] = bit;
+      bitIndex++;
+    }
+
+    bytesRead++;
+  }
+
+  *size = bytesRead * 8;
   fclose(file);
 
   debug("File - File opened");
-  debug("File - Buffer length %d", strlen((char *)buffer));
+  debug("File - File size %d", *size);
 
   return buffer;
 }
