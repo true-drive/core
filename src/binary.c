@@ -5,25 +5,7 @@
 #include "debug.h"
 #include "binary.h"
 
-unsigned char *charToBinary(unsigned char byte)
-{
-    unsigned char *binary = (unsigned char *)malloc(9 * sizeof(char));
-    if (binary == NULL)
-    {
-        printf("Memory allocation failed.\n");
-        return NULL;
-    }
-
-    for (int i = 7; i >= 0; i--)
-    {
-        binary[7 - i] = '0' + ((byte >> i) & 1);
-    }
-
-    binary[8] = '\0';
-    return binary;
-}
-
-unsigned char *writeBinary(const char *fileName, const unsigned char *content)
+void writeBinary(const char *fileName, const unsigned char *buffer, long bufferSize)
 {
     debug("Binary - Writing binary dump...");
 
@@ -33,31 +15,19 @@ unsigned char *writeBinary(const char *fileName, const unsigned char *content)
     strcat(binaryName, ".bin");
 
     // Opening the file in write mode
-    FILE *file = fopen(binaryName, "w");
+    FILE *file = fopen(binaryName, "wb");
     if (!file)
     {
-        printf("Failed to open file for writing.\n");
-        return NULL;
-    }
-
-    // Content length
-    int size = strlen((char *)content);
-    unsigned char *binary = (unsigned char *)malloc(size * 9 * sizeof(char));
-
-    // Writing the content to the file
-    for (int i = 0; i < size; i++)
-    {
-        strcat((char *)binary, (char *)charToBinary(content[i]));
+        debug("[Error] Binary - Failed to open file for writing");
     }
 
     // Writing to file
-    fprintf(file, "%s", binary);
+    for (int i = 0; i<bufferSize; i++) {
+        fprintf(file, "%d", buffer[i]);
+    }
 
     // Closing the file
     fclose(file);
 
     debug("Binary - Binary dumped to file '%s'", binaryName);
-    debug("Binary - Binary length %d", strlen((char *)binary));
-
-    return binary;
 }

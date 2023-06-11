@@ -7,7 +7,7 @@
 #include "config.h"
 #include "bitmap.h"
 
-unsigned char *writeBitmaps(const char *fileName, unsigned char *binary)
+unsigned char *writeBitmaps(const char *fileName, unsigned char *buffer, long bufferSize)
 {
   // Iterators
   int row, column;
@@ -21,7 +21,7 @@ unsigned char *writeBitmaps(const char *fileName, unsigned char *binary)
   int size = resolution * 4;
 
   // The number of bitmap dump files
-  int binaryLength = (int)strlen((char *)binary) * 4;
+  int binaryLength = bufferSize * 4;
   float ratio = (float)binaryLength / (float)size;
   int count = ceil(ratio);
 
@@ -65,7 +65,7 @@ unsigned char *writeBitmaps(const char *fileName, unsigned char *binary)
         int index = (cursor++) + offset;
 
         // If end of file, color red
-        if (index > (int)strlen((char *)binary) - 1)
+        if (index > bufferSize - 1)
         {
 
           pixels[p + 0] = 0;   // blue
@@ -74,7 +74,7 @@ unsigned char *writeBitmaps(const char *fileName, unsigned char *binary)
         }
         else
         {
-          int color = binary[index] == 48 ? 0 : 255;
+          int color = buffer[index] == 0 ? 0 : 255;
 
           pixels[p + 0] = color; // blue
           pixels[p + 1] = color; // green
