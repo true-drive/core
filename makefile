@@ -20,7 +20,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) ./test/**/*.bmp ./test/**/*.bin
 
 run: $(TARGET)
 	$(TARGET) $(MAKECMDGOALS)

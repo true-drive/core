@@ -30,12 +30,21 @@ int main(int argc, char *argv[])
     // Opening the file
     long file_size;
     unsigned char *buffer = readFile(targetFile, &file_size);
+    if (buffer == NULL) {
+        return 1;
+    }
 
     // Writing the binary dump
     unsigned char *binary = writeBinary(fileName, buffer);
+    if (binary == NULL) {
+        return 1;
+    }
 
     // Writing the bitmap dump
     unsigned char *pixels = writeBitmaps(fileName, binary);
+     if (pixels == NULL) {
+        return 1;
+    }
 
     debug("End - Clean-up");
     free(buffer);
