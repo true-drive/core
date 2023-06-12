@@ -13,26 +13,28 @@ int main(int argc, char *argv[])
     debug("Init - Starting...");
 
     // Validating arguments
-    if (argc != 2)
+    if (argc < 3)
     {
-        printf("Usage: ./truedrive <target file>\n");
-        return 1;
+        debug("[Usage] ./truedrive <input file> <output file>\n");
+        exit(1);
     }
 
-    // Fetching the passed input file path
-    const char *targetFile = argv[1];
-    debug("Init - Targeted file '%s'", targetFile);
+    // Fetching the passed params
+    const char* inputFileName = argv[1];
+    const char* outputFileName = argv[2];
+
+    debug("Init - Targeted file '%s'", inputFileName);
 
     // Getting the file name
-    const size_t fileNameSize = sizeof(char) * strlen(targetFile);
+    const size_t fileNameSize = sizeof(char) * strlen(inputFileName);
     char *fileName = malloc(fileNameSize);
-    removeExtension(targetFile, fileName);
+    removeExtension(inputFileName, fileName);
 
     // Opening the file
     long bufferSize;
-    unsigned char *buffer = readFile(targetFile, &bufferSize);
+    unsigned char *buffer = readFile(inputFileName, &bufferSize);
     if (buffer == NULL) {
-        return 1;
+        exit(1);
     }
 
     // Writing the binary dump
@@ -42,7 +44,7 @@ int main(int argc, char *argv[])
     writeBitmaps(fileName, buffer, bufferSize);
 
     // Converting to bitmap dumps to video file
-    writeVideo(fileName);
+    writeVideo(fileName, outputFileName);
 
     debug("End - Clean-up");
     free(buffer);
