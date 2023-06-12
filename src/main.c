@@ -30,6 +30,12 @@ int main(int argc, char *argv[])
     char *fileName = malloc(fileNameSize);
     removeExtension(inputFileName, fileName);
 
+    // Check if the output filename has an extension
+    if (hasExtension(outputFileName)) {
+        debug("[Error] Init - The output file should be passed with no extension");
+        exit(1);
+    }
+
     // Check if input and output filenames are the same
     if (strcmp(fileName, outputFileName) == 0) {
         debug("[Error] Init - Input and output filenames must be different");

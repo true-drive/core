@@ -1,9 +1,16 @@
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
 #include "debug.h"
 #include "binary.h"
+
+bool hasExtension(const char* fileName)
+{
+  char *extension = strrchr(fileName, '.');
+  return extension != NULL;
+}
 
 void removeExtension(const char *fileName, char *result)
 {
