@@ -7,7 +7,7 @@
 #include "config.h"
 #include "bitmap.h"
 
-void writeBitmaps(const char *fileName, unsigned char *buffer, long bufferSize)
+void writeBitmaps(const char *path, const char *fileName, unsigned char *buffer, long bufferSize)
 {
   // Iterators
   int row, column;
@@ -90,8 +90,8 @@ void writeBitmaps(const char *fileName, unsigned char *buffer, long bufferSize)
     }
 
     // Creating bitmap dump file name
-    char *bitmapName = malloc(strlen(fileName));
-    sprintf(bitmapName, "%s%d.bmp", fileName, i + 1);
+    char *bitmapName = malloc(strlen(fileName) + strlen(path) + 10);
+    sprintf(bitmapName, "%s/%s%d.bmp", path, fileName, i + 1);
 
     FILE *file = fopen(bitmapName, "wb");
     fwrite(header, 1, 54, file);

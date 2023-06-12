@@ -5,14 +5,13 @@
 #include "debug.h"
 #include "binary.h"
 
-void writeBinary(const char *fileName, const unsigned char *buffer, long bufferSize)
+void writeBinary(const char *path, const char *fileName, const unsigned char *buffer, long bufferSize)
 {
     debug("Binary - Writing binary dump...");
 
     // Creating binary dump file name
-    char *binaryName = malloc(strlen(fileName));
-    strcpy(binaryName, fileName);
-    strcat(binaryName, ".bin");
+    char *binaryName = malloc(strlen(fileName) + strlen(path));
+    sprintf(binaryName, "%s/%s.bin", path, fileName);
 
     // Opening the file in write mode
     FILE *file = fopen(binaryName, "wb");

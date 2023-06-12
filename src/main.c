@@ -14,13 +14,18 @@ int main(int argc, char *argv[])
 	debug("Init - Starting...");
 
 	// Initializing filenames
-	char *inputFileName = NULL;
-	char *outputFileName = NULL;
-	char *inputFileNamePattern = NULL;
+	char *inputPath = NULL;
+	char *outputPath = NULL;
+	char *inputFile = malloc(256);
 
 	// Processing parameters
-	enum Option command = getParams(argc, argv, &inputFileNamePattern, &inputFileName, &outputFileName);
-	debug("Init - Targeted file '%s'", inputFileName);
+	enum Option command = getParams(argc, argv, &inputPath, &outputPath);
+
+	// getting the input file name
+	getFileName(inputPath, inputFile);
+	
+	// Creating dump folder
+	debug("Init - Targeted file '%s'", inputPath);
 
 	if (command == Encode)
 	{
@@ -28,19 +33,18 @@ int main(int argc, char *argv[])
 
 		// Opening the file
 		long bufferSize;
-		unsigned char *buffer = readFile(inputFileName, &bufferSize);
+		unsigned char *buffer = readFile(inputPath, &bufferSize);
 		if (buffer == NULL) {
 			exit(1);
 		}
-
 		// Writing the binary dump
-		writeBinary(inputFileNamePattern, buffer, bufferSize);
+		writeBinary(outputPath, inputFile, buffer, bufferSize);
 
 		// Writing the bitmap dump
-		writeBitmaps(inputFileNamePattern, buffer, bufferSize);
+		writeBitmaps(outputPath, inputFile, buffer, bufferSize);
 
 		// Converting to bitmap dumps to video file
-		writeVideo(inputFileNamePattern, outputFileName);
+		writeVideo(inputFile, outputPath);
 
 		free(buffer);
 	}
@@ -51,11 +55,8 @@ int main(int argc, char *argv[])
 
 	debug("End - Clean-up");
 
-	free(inputFileNamePattern);
-
-	inputFileName = NULL;
-	outputFileName = NULL;
-	inputFileNamePattern = NULL;
+	inputPath = NULL;
+	outputPath = NULL;
 
 	return 0;
 }

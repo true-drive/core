@@ -6,6 +6,6 @@ enum Option {
   Decode
 };
 
-enum Option getParams(int argc, char *argv[], char **inputFileNamePattern, char **inputFileName, char **outputFileName);
+enum Option getParams(int argc, char *argv[], char **inputPath, char **outputPath);
 
 #endif

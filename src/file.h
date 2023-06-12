@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 
-bool hasExtension(const char* fileName);
-void removeExtension(const char* fileName, char* result);
+void getFileName(const char* filePath, char* fileName);
+void getDirPath(const char *filePath, char *dirPath);
 unsigned char *readFile(const char *fileName, long *size);
 
 #endif

@@ -20,7 +20,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(BUILD_DIR) ./test/**/*.bmp ./test/**/*.bin ./test/**/output*
+	rm -rf $(BUILD_DIR) ./test/**/*.bmp ./test/**/*.bin ./test/**/true_drive_*
 
 run: $(TARGET)
 	$(TARGET) $(MAKECMDGOALS)

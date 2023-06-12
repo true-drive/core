@@ -3,15 +3,16 @@
 #include <string.h>
 
 #include "file.h"
-#include "param.h"
 #include "debug.h"
+#include "param.h"
+#include "folder.h"
 
-enum Option getParams(int argc, char *argv[],  char **inputFileNamePattern, char **inputFileName, char **outputFileName)
+enum Option getParams(int argc, char *argv[],  char **inputPath, char **outputPath)
 {
   // Validating arguments
 	if (argc < 6)
 	{
-		debug("[Usage] %s [option] -i <input file> -o <output file>", argv[0]);
+		debug("[Usage] %s [option] -i <input file> -o <output directory>", argv[0]);
 		debug("[Usage] Options: encode - Encodes file to binary noise video");
 		debug("[Usage] Options: decode - Decodes binary noise video to file");
 		exit(1);
@@ -38,11 +39,11 @@ enum Option getParams(int argc, char *argv[],  char **inputFileNamePattern, char
   {
 		if (strcmp(argv[i], "-i") == 0)
     {
-			*inputFileName = argv[i + 1];
+			*inputPath = argv[i + 1];
 		}
     else if (strcmp(argv[i], "-o") == 0)
 		{
-			*outputFileName = argv[i + 1];
+			*outputPath = argv[i + 1];
 		}
     else
     {
@@ -51,30 +52,14 @@ enum Option getParams(int argc, char *argv[],  char **inputFileNamePattern, char
 		}
 	}
 
-  if (*inputFileName == NULL || *outputFileName == NULL) {
-    debug("[Error] Init - Input and output files must be provided");
+  if (*inputPath == NULL || *outputPath == NULL) {
+    debug("[Error] Init - Input and output paths must be provided");
     exit(1);
   }
 
-	// Check if the output filename has an extension
-	if (hasExtension(*outputFileName)) {
-		debug("[Error] Init - The output file should be passed with no extension");
-		exit(1);
-	}
+	// getting the output directory path
+	getDirPath(*outputPath, *outputPath);
+	createFolder(*outputPath, command, *outputPath);
 
-	// Getting the file name
-	char *filename = malloc(strlen(*inputFileName));
-	removeExtension(*inputFileName, filename);
-	*inputFileNamePattern = malloc(strlen(filename));
-	strcpy(*inputFileNamePattern, filename);
-
-	// Check if input and output filenames are the same
-	if (strcmp(*inputFileNamePattern, *outputFileName) == 0) {
-		debug("[Error] Init - Input and output filenames must be different");
-		free(filename);
-		exit(1);
-	}
-
-	free(filename);
 	return command;
 }

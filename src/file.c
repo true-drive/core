@@ -6,30 +6,38 @@
 #include "debug.h"
 #include "binary.h"
 
-bool hasExtension(const char* fileName)
-{
-  char *extension = strrchr(fileName, '.');
-  return extension != NULL;
+void getFileName(const char *filePath, char *fileName) {
+  const char* lastSlash = strrchr(filePath, '/');
+  const char* lastBackslash = strrchr(filePath, '\\');
+  const char* filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
+  const char* dot = strrchr(filePath, '.');
+
+  if (filenameStart != NULL)
+  {
+    strcpy(fileName, filenameStart + 1);
+  } else
+  {
+    strcpy(fileName, filePath);
+  }
+
+  if (dot != NULL && dot > filenameStart)
+  {
+    fileName[dot - filenameStart - 1] = '\0';
+  }
 }
 
-void removeExtension(const char *fileName, char *result)
-{
-  // Find the last dot in the file name
-  const char *dot = strrchr(fileName, '.');
+void getDirPath(const char *filePath, char *dirPath) {
+  const char* lastSlash = strrchr(filePath, '/');
+  const char* lastBackslash = strrchr(filePath, '\\');
+  const char* filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
 
-  if (dot)
+  if (filenameStart != NULL)
   {
-    // Calculate the length of the name without extension
-    size_t length = dot - fileName;
-
-    // Copy the name without extension to the result
-    strncpy(result, fileName, length);
-    result[length] = '\0';
-  }
-  else
+    strncpy(dirPath, filePath, filenameStart - filePath + 1);
+    dirPath[filenameStart - filePath + 1] = '\0';
+  } else
   {
-    // If no dot found, return the original file name
-    strcpy(result, fileName);
+    strcpy(dirPath, "");
   }
 }
 
