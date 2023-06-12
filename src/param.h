@@ -1,6 +1,11 @@
 #ifndef PARAM_UTILS_H
 #define PARAM_UTILS_H
 
-void getParams(int argc, char *argv[], const char **inputFileName, const char **outputFileName);
+enum Option {
+  Encode,
+  Decode
+};
+
+enum Option getParams(int argc, char *argv[], char **inputFileNamePattern, char **inputFileName, char **outputFileName);
 
 #endif

@@ -14,31 +14,48 @@ int main(int argc, char *argv[])
 	debug("Init - Starting...");
 
 	// Initializing filenames
-	const char* inputFileName = NULL;
-	const char* outputFileName = NULL;
+	char *inputFileName = NULL;
+	char *outputFileName = NULL;
+	char *inputFileNamePattern = NULL;
 
 	// Processing parameters
-	getParams(argc, argv, &inputFileName, &outputFileName);
+	enum Option command = getParams(argc, argv, &inputFileNamePattern, &inputFileName, &outputFileName);
 	debug("Init - Targeted file '%s'", inputFileName);
 
-	// Opening the file
-	long bufferSize;
-	unsigned char *buffer = readFile(inputFileName, &bufferSize);
-	if (buffer == NULL) {
-		exit(1);
+	if (command == Encode)
+	{
+		debug("Init - Starting file encoding...");
+
+		// Opening the file
+		long bufferSize;
+		unsigned char *buffer = readFile(inputFileName, &bufferSize);
+		if (buffer == NULL) {
+			exit(1);
+		}
+
+		// Writing the binary dump
+		writeBinary(inputFileNamePattern, buffer, bufferSize);
+
+		// Writing the bitmap dump
+		writeBitmaps(inputFileNamePattern, buffer, bufferSize);
+
+		// Converting to bitmap dumps to video file
+		writeVideo(inputFileNamePattern, outputFileName);
+
+		free(buffer);
+	}
+	else
+	{
+		debug("Init - Starting file decoding...");
 	}
 
-	// Writing the binary dump
-	writeBinary(inputFileName, buffer, bufferSize);
-
-	// Writing the bitmap dump
-	writeBitmaps(inputFileName, buffer, bufferSize);
-
-	// Converting to bitmap dumps to video file
-	writeVideo(inputFileName, outputFileName);
-
 	debug("End - Clean-up");
-	free(buffer);
+
+	free(inputFileNamePattern);
+
+	inputFileName = NULL;
+	outputFileName = NULL;
+	inputFileNamePattern = NULL;
 
 	return 0;
 }
