@@ -1,13 +1,10 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "file.h"
 #include "param.h"
 #include "debug.h"
-#include "video.h"
-#include "binary.h"
-#include "bitmap.h"
+#include "encode.h"
+#include "decode.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,28 +26,11 @@ int main(int argc, char *argv[])
 
 	if (command == Encode)
 	{
-		debug("Init - Starting file encoding...");
-
-		// Opening the file
-		long bufferSize;
-		unsigned char *buffer = readFile(inputPath, &bufferSize);
-		if (buffer == NULL) {
-			exit(1);
-		}
-		// Writing the binary dump
-		writeBinary(outputPath, inputFile, buffer, bufferSize);
-
-		// Writing the bitmap dump
-		writeBitmaps(outputPath, inputFile, buffer, bufferSize);
-
-		// Converting to bitmap dumps to video file
-		writeVideo(inputFile, outputPath);
-
-		free(buffer);
+		encode(inputFile, inputPath, outputPath);
 	}
 	else
 	{
-		debug("Init - Starting file decoding...");
+		decode();
 	}
 
 	debug("End - Clean-up");
