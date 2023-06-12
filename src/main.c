@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "file.h"
+#include "param.h"
 #include "debug.h"
 #include "video.h"
 #include "binary.h"
@@ -10,56 +11,34 @@
 
 int main(int argc, char *argv[])
 {
-    debug("Init - Starting...");
+	debug("Init - Starting...");
 
-    // Validating arguments
-    if (argc < 3)
-    {
-        debug("[Usage] ./truedrive <input file> <output file>\n");
-        exit(1);
-    }
+	// Initializing filenames
+	const char* inputFileName = NULL;
+	const char* outputFileName = NULL;
 
-    // Fetching the passed params
-    const char* inputFileName = argv[1];
-    const char* outputFileName = argv[2];
+	// Processing parameters
+	getParams(argc, argv, &inputFileName, &outputFileName);
+	debug("Init - Targeted file '%s'", inputFileName);
 
-    debug("Init - Targeted file '%s'", inputFileName);
+	// Opening the file
+	long bufferSize;
+	unsigned char *buffer = readFile(inputFileName, &bufferSize);
+	if (buffer == NULL) {
+		exit(1);
+	}
 
-    // Getting the file name
-    const size_t fileNameSize = sizeof(char) * strlen(inputFileName);
-    char *fileName = malloc(fileNameSize);
-    removeExtension(inputFileName, fileName);
+	// Writing the binary dump
+	writeBinary(inputFileName, buffer, bufferSize);
 
-    // Check if the output filename has an extension
-    if (hasExtension(outputFileName)) {
-        debug("[Error] Init - The output file should be passed with no extension");
-        exit(1);
-    }
+	// Writing the bitmap dump
+	writeBitmaps(inputFileName, buffer, bufferSize);
 
-    // Check if input and output filenames are the same
-    if (strcmp(fileName, outputFileName) == 0) {
-        debug("[Error] Init - Input and output filenames must be different");
-        exit(1);
-    }
+	// Converting to bitmap dumps to video file
+	writeVideo(inputFileName, outputFileName);
 
-    // Opening the file
-    long bufferSize;
-    unsigned char *buffer = readFile(inputFileName, &bufferSize);
-    if (buffer == NULL) {
-        exit(1);
-    }
+	debug("End - Clean-up");
+	free(buffer);
 
-    // Writing the binary dump
-    writeBinary(fileName, buffer, bufferSize);
-
-    // Writing the bitmap dump
-    writeBitmaps(fileName, buffer, bufferSize);
-
-    // Converting to bitmap dumps to video file
-    writeVideo(fileName, outputFileName);
-
-    debug("End - Clean-up");
-    free(buffer);
-
-    return 0;
+	return 0;
 }
