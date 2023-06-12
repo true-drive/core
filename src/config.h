@@ -7,4 +7,6 @@
 #define BITMAP_WIDTH BITMAP_SIZE
 #define BITMAP_HEIGHT BITMAP_SIZE
 
+#define OUTPUT_EXTENSION "mp4"
+
 #endif

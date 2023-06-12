@@ -4,6 +4,7 @@
 
 #include "debug.h"
 #include "video.h"
+#include "config.h"
 
 void writeVideo(const char *inputFileNamePattern, const char *outputFileName)
 {
@@ -14,7 +15,7 @@ void writeVideo(const char *inputFileNamePattern, const char *outputFileName)
   sprintf(input, "%s%%d.bmp", inputFileNamePattern);
 
   char output[100];
-  sprintf(output, "%s.mp4", outputFileName);
+  sprintf(output, "%s.%s", outputFileName, OUTPUT_EXTENSION);
   
   // Constructing ffmpeg command
   sprintf(command, "ffmpeg -framerate 30 -i %s -c:v libx264 -r 30 %s", input, output);
