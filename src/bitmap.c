@@ -7,7 +7,7 @@
 #include "config.h"
 #include "bitmap.h"
 
-unsigned char *writeBitmaps(const char *fileName, unsigned char *buffer, long bufferSize)
+void writeBitmaps(const char *fileName, unsigned char *buffer, long bufferSize)
 {
   // Iterators
   int row, column;
@@ -43,8 +43,14 @@ unsigned char *writeBitmaps(const char *fileName, unsigned char *buffer, long bu
     memset(&header[14], (int)40, 1);
 
     // Resolution
-    memset(&header[18], (int)width, 1);
-    memset(&header[22], (int)height, 1);
+    memset(&header[18], (int)(width & 0xFF), 1);
+    memset(&header[19], (int)((width >> 8) & 0xFF), 1);
+    memset(&header[20], (int)((width >> 16) & 0xFF), 1);
+    memset(&header[21], (int)((width >> 24) & 0xFF), 1);
+    memset(&header[22], (int)(height & 0xFF), 1);
+    memset(&header[23], (int)((height >> 8) & 0xFF), 1);
+    memset(&header[24], (int)((height >> 16) & 0xFF), 1);
+    memset(&header[25], (int)((height >> 24) & 0xFF), 1);
     memset(&header[26], (short)1, 1);
 
     // 32-bit
@@ -96,6 +102,4 @@ unsigned char *writeBitmaps(const char *fileName, unsigned char *buffer, long bu
   }
 
   debug("Bitmap - Generated all %d bitmap(s)", count);
-
-  // return pixels;
 }
