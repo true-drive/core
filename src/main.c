@@ -4,6 +4,7 @@
 
 #include "file.h"
 #include "debug.h"
+#include "video.h"
 #include "binary.h"
 #include "bitmap.h"
 
@@ -39,6 +40,9 @@ int main(int argc, char *argv[])
 
     // Writing the bitmap dump
     writeBitmaps(fileName, buffer, bufferSize);
+
+    // Converting to bitmap dumps to video file
+    writeVideo(fileName);
 
     debug("End - Clean-up");
     free(buffer);
