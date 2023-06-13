@@ -1,6 +1,11 @@
 {
   "files.associations": {
     "binary.h": "c",
-    "config.h": "c"
+    "config.h": "c",
+    "stdlib.h": "c",
+    "debug.h": "c",
+    "file.h": "c",
+    "param.h": "c",
+    "stdio.h": "c"
   }
 }
