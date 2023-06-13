@@ -6,16 +6,29 @@
 #include "debug.h"
 #include "binary.h"
 
-void getFileName(const char *filePath, char *fileName) {
-  const char* lastSlash = strrchr(filePath, '/');
-  const char* lastBackslash = strrchr(filePath, '\\');
-  const char* filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
-  const char* dot = strrchr(filePath, '.');
+bool hasExtension(const char *fileName, const char *extension)
+{
+  const char *fileExtension = strrchr(fileName, '.');
+  if (fileExtension == NULL)
+  {
+    return false;
+  }
+
+  return strcmp(fileExtension + 1, extension) == 0;
+}
+
+void getFileName(const char *filePath, char *fileName)
+{
+  const char *lastSlash = strrchr(filePath, '/');
+  const char *lastBackslash = strrchr(filePath, '\\');
+  const char *filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
+  const char *dot = strrchr(filePath, '.');
 
   if (filenameStart != NULL)
   {
     strcpy(fileName, filenameStart + 1);
-  } else
+  }
+  else
   {
     strcpy(fileName, filePath);
   }
@@ -26,16 +39,18 @@ void getFileName(const char *filePath, char *fileName) {
   }
 }
 
-void getDirPath(const char *filePath, char *dirPath) {
-  const char* lastSlash = strrchr(filePath, '/');
-  const char* lastBackslash = strrchr(filePath, '\\');
-  const char* filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
+void getDirPath(const char *filePath, char *dirPath)
+{
+  const char *lastSlash = strrchr(filePath, '/');
+  const char *lastBackslash = strrchr(filePath, '\\');
+  const char *filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
 
   if (filenameStart != NULL)
   {
     strncpy(dirPath, filePath, filenameStart - filePath + 1);
     dirPath[filenameStart - filePath + 1] = '\0';
-  } else
+  }
+  else
   {
     strcpy(dirPath, "");
   }

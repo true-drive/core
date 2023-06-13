@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
 	// getting the input file name
 	getFileName(inputPath, inputFile);
-	
+
 	// Creating dump folder
 	debug("Init - Targeted file '%s'", inputPath);
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		decode();
+		decode(inputFile, inputPath, outputPath);
 	}
 
 	debug("End - Clean-up");
