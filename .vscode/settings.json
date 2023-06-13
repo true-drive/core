@@ -6,6 +6,10 @@
     "debug.h": "c",
     "file.h": "c",
     "param.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "bitmap.h": "c",
+    "video.h": "c",
+    "string.h": "c",
+    "math.h": "c"
   }
 }

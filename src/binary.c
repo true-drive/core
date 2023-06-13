@@ -21,7 +21,8 @@ void writeBinary(const char *path, const char *fileName, const unsigned char *bu
     }
 
     // Writing to file
-    for (int i = 0; i<bufferSize; i++) {
+    for (int i = 0; i < bufferSize; i++)
+    {
         fprintf(file, "%d", buffer[i]);
     }
 
