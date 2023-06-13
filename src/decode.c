@@ -1,7 +1,11 @@
+#include <stdlib.h>
+
 #include "file.h"
 #include "video.h"
 #include "debug.h"
+#include "binary.h"
 #include "config.h"
+#include "bitmap.h"
 
 void decode(char *inputFile, char *inputPath, char *outputPath)
 {
@@ -15,5 +19,22 @@ void decode(char *inputFile, char *inputPath, char *outputPath)
   }
 
   // Extracting frames from video
-  extractFrames(inputFile, inputPath, outputPath);
+  int frames = extractFrames(inputFile, inputPath, outputPath);
+
+  // Reading bitmaps
+  unsigned int *binary;
+  int binarySize = readBitmaps(outputPath, inputFile, frames, &binary);
+
+  // Copying binary over to buffer
+  unsigned char *buffer = malloc(binarySize);
+  for (int i = 0; i < binarySize; i++)
+  {
+    buffer[i] = binary[i];
+  }
+
+  // Outputing binary
+  writeBinary(outputPath, inputFile, buffer, binarySize);
+
+  free(binary);
+  free(buffer);
 }
