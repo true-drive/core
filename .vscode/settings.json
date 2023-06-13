@@ -10,6 +10,7 @@
     "bitmap.h": "c",
     "video.h": "c",
     "string.h": "c",
-    "math.h": "c"
+    "math.h": "c",
+    "color.h": "c"
   }
 }
