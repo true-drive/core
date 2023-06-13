@@ -35,6 +35,9 @@ void decode(char *inputFile, char *inputPath, char *outputPath)
   // Outputing binary
   writeBinary(outputPath, inputFile, buffer, binarySize);
 
+  // Writing original file
+  writeFile(outputPath, buffer, binarySize);
+
   free(binary);
   free(buffer);
 }

@@ -140,3 +140,44 @@ unsigned char *readFile(const char *fileName, long *size)
 
   return buffer;
 }
+
+void writeFile(const char *path, const unsigned char *buffer, long bufferSize)
+{
+  // Target bitmap path
+  char *filePath = malloc(strlen(path) + 50);
+  sprintf(filePath, "%s/output.txt", path);
+
+  FILE *file = fopen(filePath, "wb");
+  if (file == NULL)
+  {
+    debug("[Error] File - Could not open file for writing");
+    exit(1);
+  }
+
+  debug("File - Writing file '%s'...", filePath);
+
+  // Convert the bit sequence to bytes
+  unsigned char byte = 0;
+  int bitCount = 0;
+
+  for (long i = 0; i < bufferSize; i++)
+  {
+    byte = (byte << 1) | buffer[i];
+    bitCount++;
+
+    if (bitCount == 8)
+    {
+      fputc(byte, file);
+      byte = 0;
+      bitCount = 0;
+    }
+  }
+
+  if (bitCount > 0)
+  {
+    byte = byte << (8 - bitCount);
+    fputc(byte, file);
+  }
+
+  fclose(file);
+}
