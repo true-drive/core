@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "file.h"
 #include "debug.h"
 #include "video.h"
 #include "config.h"
@@ -18,7 +19,7 @@ void extractFrames(const char *inputFile, const char *inputPath, const char *out
   sprintf(output, "%s/%s%%d.bmp", outputPath, inputFile);
 
   // Constructing ffmpeg command
-  sprintf(command, "ffmpeg -i %s -vf \"select='eq(n,0)',setpts=N/TB,scale=w=-1:h=-1\" -frames:v 1 %s", input, output);
+  sprintf(command, "ffmpeg -i %s %s", input, output);
   
   // Running ffmpeg
   int error = system(command);
@@ -26,6 +27,9 @@ void extractFrames(const char *inputFile, const char *inputPath, const char *out
     debug("[Error] Video - FFMPEG could not extract video frames");
     exit(1);
   }
+
+  int files = getFileCount(outputPath, "bmp");
+  debug("Video - Extracted %d frames from video", files);
 }
 
 void writeVideo(const char *inputFilePattern, const char *outputPath)

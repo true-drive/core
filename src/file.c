@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 
 #include "debug.h"
 #include "binary.h"
@@ -54,6 +56,37 @@ void getDirPath(const char *filePath, char *dirPath)
   {
     strcpy(dirPath, "");
   }
+}
+
+int getFileCount(const char *directory, const char *extension)
+{
+  int count = 0;
+  DIR *dir = opendir(directory);
+  if (dir == NULL)
+  {
+    perror("Error opening directory");
+    return -1;
+  }
+
+  struct dirent *entry;
+  while ((entry = readdir(dir)) != NULL)
+  {
+    struct stat fileInfo;
+    char filePath[256];
+    snprintf(filePath, sizeof(filePath), "%s/%s", directory, entry->d_name);
+
+    if (stat(filePath, &fileInfo) == 0 && S_ISREG(fileInfo.st_mode))
+    {
+      const char *fileExtension = strrchr(entry->d_name, '.');
+      if (fileExtension != NULL && strcmp(fileExtension + 1, extension) == 0)
+      {
+        count++;
+      }
+    }
+  }
+
+  closedir(dir);
+  return count;
 }
 
 unsigned char *readFile(const char *fileName, long *size)

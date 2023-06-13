@@ -16,6 +16,4 @@ void decode(char *inputFile, char *inputPath, char *outputPath)
 
   // Extracting frames from video
   extractFrames(inputFile, inputPath, outputPath);
-
-  // Get stats
 }
