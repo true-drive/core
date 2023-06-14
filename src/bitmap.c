@@ -108,6 +108,8 @@ void writeBitmaps(const char *path, const char *fileName, unsigned char *buffer,
 
 int readBitmaps(const char *path, const char *fileName, int frames, int **binary)
 {
+  int binarySize = 0;
+
   for (int i = 0; i < frames; i++)
   {
     debug("Bitmap - Extracting frame %d...", i + 1);
@@ -137,6 +139,11 @@ int readBitmaps(const char *path, const char *fileName, int frames, int **binary
 
     // Calculate the size of the pixel data
     int size = rowSize * header.height;
+
+    if (i == 0)
+    {
+      *binary = malloc((frames + 1) * header.width * header.height * sizeof(int));
+    }
 
     // Allocate memory for a single row
     uint8_t *rowData = (uint8_t *)malloc(size);
@@ -181,8 +188,6 @@ int readBitmaps(const char *path, const char *fileName, int frames, int **binary
 
     // Iteration state
     bool ended = false;
-    int binarySize = 0;
-    *binary = malloc(header.width * header.height * sizeof(int));
 
     // Iterating over pixels in memory
     for (int y = 0; y < header.height || !ended; y++)
@@ -201,6 +206,12 @@ int readBitmaps(const char *path, const char *fileName, int frames, int **binary
         if (isRedish(red, green, blue))
         {
           ended = true;
+
+          free(pixels);
+          free(rowData);
+          fclose(file);
+
+          return binarySize;
           break;
         }
 
@@ -222,7 +233,7 @@ int readBitmaps(const char *path, const char *fileName, int frames, int **binary
     free(pixels);
     free(rowData);
     fclose(file);
-
-    return binarySize;
   }
+
+  return binarySize;
 }

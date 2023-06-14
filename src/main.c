@@ -49,8 +49,10 @@ int main(int argc, char *argv[])
 
 	debug("End - Clean-up");
 
+	debugDir = NULL;
 	inputPath = NULL;
 	outputPath = NULL;
+	outputFile = NULL;
 
 	return 0;
 }
