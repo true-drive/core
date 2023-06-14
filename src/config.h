@@ -7,7 +7,7 @@
 #define BITMAP_WIDTH      BITMAP_SIZE
 #define BITMAP_HEIGHT     BITMAP_SIZE
 
-#define OUTPUT_EXTENSION  "mp4"
+#define OUTPUT_EXTENSION  "mkv"
 #define OUTPUT_FILE       "output"
 #define OUTPUT_FOLDER     "true_drive"
 
