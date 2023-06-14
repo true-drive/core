@@ -19,42 +19,69 @@ bool hasExtension(const char *fileName, const char *extension)
   return strcmp(fileExtension + 1, extension) == 0;
 }
 
-void getFileName(const char *filePath, char *fileName)
+bool hasAnyExtension(const char *fileName)
+{
+  const char *fileExtension = strrchr(fileName, '.');
+  return fileExtension != NULL;
+}
+
+void getFileName(const char *filePath, char **fileName)
 {
   const char *lastSlash = strrchr(filePath, '/');
   const char *lastBackslash = strrchr(filePath, '\\');
   const char *filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
   const char *dot = strrchr(filePath, '.');
 
+  size_t fileNameSize = (sizeof(char) * (strlen(filePath) - strlen(filenameStart))) + 1;
+  *fileName = malloc(fileNameSize);
+  if (fileName == NULL)
+  {
+    debug("[Error] - Failed to allocate memory");
+    exit(1);
+  }
+
   if (filenameStart != NULL)
   {
-    strcpy(fileName, filenameStart + 1);
+    strcpy(*fileName, filenameStart + 1);
   }
   else
   {
-    strcpy(fileName, filePath);
+    strcpy(*fileName, filePath);
   }
 
   if (dot != NULL && dot > filenameStart)
   {
-    fileName[dot - filenameStart - 1] = '\0';
+    (*fileName)[dot - filenameStart - 1] = '\0';
   }
 }
 
-void getDirPath(const char *filePath, char *dirPath)
+void getDirPath(const char *path, char **dirPath)
 {
-  const char *lastSlash = strrchr(filePath, '/');
-  const char *lastBackslash = strrchr(filePath, '\\');
-  const char *filenameStart = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
+  const char *lastSlash = strrchr(path, '/');
+  const char *lastBackslash = strrchr(path, '\\');
+  const char *lastSeparator = lastSlash > lastBackslash ? lastSlash : lastBackslash;
 
-  if (filenameStart != NULL)
+  if (lastSeparator != NULL)
   {
-    strncpy(dirPath, filePath, filenameStart - filePath + 1);
-    dirPath[filenameStart - filePath + 1] = '\0';
+    size_t dirPathLength = lastSeparator - path + 1;
+    *dirPath = malloc(dirPathLength + 1);
+    if (dirPath == NULL)
+    {
+      debug("[Error] Init - Failed to allocate memory for directory path");
+      exit(1);
+    }
+
+    strncpy(*dirPath, path, dirPathLength);
+    (*dirPath)[dirPathLength] = '\0';
   }
   else
   {
-    strcpy(dirPath, "");
+    *dirPath = strdup("");
+    if (*dirPath == NULL)
+    {
+      debug("[Error] Init - Failed to allocate memory for directory path");
+      exit(1);
+    }
   }
 }
 
@@ -89,7 +116,7 @@ int getFileCount(const char *directory, const char *extension)
   return count;
 }
 
-unsigned char *readFile(const char *fileName, long *size)
+unsigned char *readFile(const char *fileName, size_t *size)
 {
   debug("File - Opening file '%s'...", fileName);
 
@@ -141,11 +168,11 @@ unsigned char *readFile(const char *fileName, long *size)
   return buffer;
 }
 
-void writeFile(const char *path, const unsigned char *buffer, long bufferSize)
+void writeFile(const char *path, const char *debugPath, const unsigned char *buffer, long bufferSize)
 {
   // Target bitmap path
   char *filePath = malloc(strlen(path) + 50);
-  sprintf(filePath, "%s/output.txt", path);
+  sprintf(filePath, "%s", path);
 
   FILE *file = fopen(filePath, "wb");
   if (file == NULL)

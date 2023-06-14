@@ -7,7 +7,7 @@
 #include "config.h"
 #include "bitmap.h"
 
-void decode(char *inputFile, char *inputPath, char *outputPath)
+void decode(const char *outputFile, const char *inputPath, const char *outputPath, const char *debugPath)
 {
   debug("Init - Starting file decoding...");
 
@@ -19,11 +19,10 @@ void decode(char *inputFile, char *inputPath, char *outputPath)
   }
 
   // Extracting frames from video
-  int frames = extractFrames(inputFile, inputPath, outputPath);
-
+  int frames = extractFrames(outputFile, inputPath, debugPath);
   // Reading bitmaps
   unsigned int *binary;
-  int binarySize = readBitmaps(outputPath, inputFile, frames, &binary);
+  int binarySize = readBitmaps(debugPath, outputFile, frames, &binary);
 
   // Copying binary over to buffer
   unsigned char *buffer = malloc(binarySize);
@@ -33,10 +32,10 @@ void decode(char *inputFile, char *inputPath, char *outputPath)
   }
 
   // Outputing binary
-  writeBinary(outputPath, inputFile, buffer, binarySize);
+  writeBinary(debugPath, outputFile, buffer, binarySize);
 
   // Writing original file
-  writeFile(outputPath, buffer, binarySize);
+  writeFile(outputPath, debugPath, buffer, binarySize);
 
   free(binary);
   free(buffer);

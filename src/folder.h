@@ -3,6 +3,6 @@
 
 #include "param.h"
 
-void createFolder(const char *path, enum Option option, char *folderPath);
+void createFolder(const char *path, enum Option option, char **outPath);
 
 #endif

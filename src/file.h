@@ -3,11 +3,12 @@
 
 #include <stdbool.h>
 
-void getDirPath(const char *filePath, char *dirPath);
-void getFileName(const char *filePath, char *fileName);
+void getDirPath(const char *path, char **dirPath);
+void getFileName(const char *filePath, char **fileName);
+bool hasAnyExtension(const char *fileName);
 bool hasExtension(const char *fileName, const char *extension);
 int getFileCount(const char *directory, const char *extension);
-unsigned char *readFile(const char *fileName, long *size);
-void writeFile(const char *path, const unsigned char *buffer, long bufferSize);
+unsigned char *readFile(const char *fileName, size_t *size);
+void writeFile(const char *path, const char *debugPath, const unsigned char *buffer, long bufferSize);
 
 #endif

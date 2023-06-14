@@ -10,7 +10,7 @@ void writeBinary(const char *path, const char *fileName, const unsigned char *bu
     debug("Binary - Writing binary dump...");
 
     // Creating binary dump file name
-    char *binaryName = malloc(strlen(fileName) + strlen(path));
+    char *binaryName = malloc(strlen(fileName) + strlen(path) + 1);
     sprintf(binaryName, "%s/%s.bin", path, fileName);
 
     // Opening the file in write mode
@@ -18,6 +18,7 @@ void writeBinary(const char *path, const char *fileName, const unsigned char *bu
     if (!file)
     {
         debug("[Error] Binary - Failed to open file for writing");
+        exit(1);
     }
 
     // Writing to file
@@ -28,6 +29,5 @@ void writeBinary(const char *path, const char *fileName, const unsigned char *bu
 
     // Closing the file
     fclose(file);
-
     debug("Binary - Binary dumped to file '%s'", binaryName);
 }

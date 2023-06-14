@@ -10,19 +10,19 @@ This repository houses the core functionality of True Drive which lies in the pr
 The program has two entry modes, encode and decode. Both can be run as follow
 
 ```sh
-./truedrive [option] -i <input file> -o <output folder>
+./truedrive [option] -i <input file> -o <output file>
 ```
 
 ### Encoding
 In order to encode a file into a noise video, say `input.txt`, run the following.
 
 ```sh
-./truedrive encode -i input.txt -o /path/to/output
+./truedrive encode -i input.txt -o output
 ```
 
 ### Decoding
 In order to encode a file into a noise video, say `input.txt`, run the following.
 
 ```sh
-./truedrive decode -i input.mp4 -o /path/to/output
+./truedrive decode -i input.mp4 -o output
 ```

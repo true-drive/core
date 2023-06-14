@@ -1,8 +1,10 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "file.h"
 #include "param.h"
 #include "debug.h"
+#include "folder.h"
 #include "encode.h"
 #include "decode.h"
 
@@ -13,24 +15,36 @@ int main(int argc, char *argv[])
 	// Initializing filenames
 	char *inputPath = NULL;
 	char *outputPath = NULL;
-	char *inputFile = malloc(256);
+	size_t inputPathSize = 0;
+	size_t outputPathSize = 0;
 
 	// Processing parameters
-	enum Option command = getParams(argc, argv, &inputPath, &outputPath);
+	enum Option command = getParams(argc, argv, &inputPath, &inputPathSize, &outputPath, &outputPathSize);
+
+	// getting the debug directory path
+	char *debugDir = NULL;
+	getDirPath(outputPath, &debugDir);
+
+	// Debug folder
+	char *debugPath = NULL;
+	createFolder(debugDir, command, &debugPath);
 
 	// getting the input file name
-	getFileName(inputPath, inputFile);
+	char *outputFile = NULL;
+	getFileName(outputPath, &outputFile);
 
 	// Creating dump folder
-	debug("Init - Targeted file '%s'", inputPath);
+	debug("Init - Input file '%s'", inputPath);
+	debug("Init - Output file '%s'", outputPath);
+	debug("Init - Debug directory '%s'", debugPath);
 
 	if (command == Encode)
 	{
-		encode(inputFile, inputPath, outputPath);
+		encode(outputFile, inputPath, outputPath, debugPath);
 	}
 	else
 	{
-		decode(inputFile, inputPath, outputPath);
+		decode(outputFile, inputPath, outputPath, debugPath);
 	}
 
 	debug("End - Clean-up");

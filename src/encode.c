@@ -7,24 +7,27 @@
 #include "binary.h"
 #include "bitmap.h"
 
-void encode(char *inputFile, char *inputPath, char *outputPath)
+void encode(const char *outputFile, const char *inputPath, const char *outputPath, const char *debugPath)
 {
   debug("Init - Starting file encoding...");
 
   // Opening the file
-  long bufferSize;
+  size_t bufferSize;
   unsigned char *buffer = readFile(inputPath, &bufferSize);
-  if (buffer == NULL) {
+  if (buffer == NULL)
+  {
+    debug("[Error] - Failed to allocated memory for file buffer");
     exit(1);
   }
+
   // Writing the binary dump
-  writeBinary(outputPath, inputFile, buffer, bufferSize);
+  writeBinary(debugPath, outputFile, buffer, bufferSize);
 
   // Writing the bitmap dump
-  writeBitmaps(outputPath, inputFile, buffer, bufferSize);
+  writeBitmaps(debugPath, outputFile, buffer, bufferSize);
 
   // Converting to bitmap dumps to video file
-  writeVideo(inputFile, outputPath);
+  writeVideo(outputFile, debugPath, outputPath);
 
   free(buffer);
 }

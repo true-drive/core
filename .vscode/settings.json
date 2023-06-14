@@ -11,6 +11,9 @@
     "video.h": "c",
     "string.h": "c",
     "math.h": "c",
-    "color.h": "c"
+    "color.h": "c",
+    "folder.h": "c",
+    "decode.h": "c",
+    "stdbool.h": "c"
   }
 }
