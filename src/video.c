@@ -47,9 +47,9 @@ void writeVideo(const char *inputFilePattern, const char *debugPath, const char 
   sprintf(output, "%s.%s", outputPath, OUTPUT_EXTENSION);
 
   // Constructing ffmpeg command
-  sprintf(command, "ffmpeg -loglevel quiet -framerate 30 -i %s -c:v libx264 -r 30 %s", input, output);
-  // sprintf(command, "ffmpeg -framerate 30 -i %s -c:v libx264rgb -preset ultrafast -crf 0 %s", input, output);
-  // sprintf(command, "ffmpeg -framerate 30 -i %s -c:v ffv1 -level 3 -g 1 %s", input, output);
+  // Default: sprintf(command, "ffmpeg -loglevel quiet -framerate 30 -i %s -c:v libx264 -r 30 %s", input, output);
+  // Lossless: sprintf(command, "ffmpeg -framerate 30 -i %s -c:v ffv1 -level 3 -g 1 %s", input, output);
+  sprintf(command, "ffmpeg -loglevel quiet -framerate 30 -i %s -c:v libx264rgb -preset ultrafast -crf 0 %s", input, output);
 
   // Running ffmpeg
   int error = system(command);
