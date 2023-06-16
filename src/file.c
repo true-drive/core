@@ -99,7 +99,7 @@ int getFileCount(const char *directory, const char *extension)
   while ((entry = readdir(dir)) != NULL)
   {
     struct stat fileInfo;
-    char filePath[256];
+    char filePath[500];
     snprintf(filePath, sizeof(filePath), "%s/%s", directory, entry->d_name);
 
     if (stat(filePath, &fileInfo) == 0 && S_ISREG(fileInfo.st_mode))
@@ -168,7 +168,7 @@ unsigned char *readFile(const char *fileName, size_t *size)
   return buffer;
 }
 
-void writeFile(const char *path, const char *debugPath, const unsigned char *buffer, long bufferSize)
+void writeFile(const char *path, const unsigned char *buffer, long bufferSize)
 {
   // Target bitmap path
   char *filePath = malloc(strlen(path) + 50);

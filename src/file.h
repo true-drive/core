@@ -9,6 +9,6 @@ bool hasAnyExtension(const char *fileName);
 bool hasExtension(const char *fileName, const char *extension);
 int getFileCount(const char *directory, const char *extension);
 unsigned char *readFile(const char *fileName, size_t *size);
-void writeFile(const char *path, const char *debugPath, const unsigned char *buffer, long bufferSize);
+void writeFile(const char *path, const unsigned char *buffer, long bufferSize);
 
 #endif

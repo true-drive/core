@@ -190,7 +190,7 @@ int readBitmaps(const char *path, const char *fileName, int frames, int **binary
     bool ended = false;
 
     // Iterating over pixels in memory
-    for (int y = 0; y < header.height || !ended; y++)
+    for (int y = 0; y < header.height || ended; y++)
     {
       for (int x = 0; x < header.width; x++)
       {
@@ -207,11 +207,15 @@ int readBitmaps(const char *path, const char *fileName, int frames, int **binary
         {
           ended = true;
 
-          free(pixels);
-          free(rowData);
-          fclose(file);
+          if (i + 1 == frames)
+          {
+            free(pixels);
+            free(rowData);
+            fclose(file);
 
-          return binarySize;
+            return binarySize;
+          }
+
           break;
         }
 

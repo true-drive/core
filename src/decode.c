@@ -20,8 +20,9 @@ void decode(const char *outputFile, const char *inputPath, const char *outputPat
 
   // Extracting frames from video
   int frames = extractFrames(outputFile, inputPath, debugPath);
+
   // Reading bitmaps
-  unsigned int *binary;
+  int *binary;
   int binarySize = readBitmaps(debugPath, outputFile, frames, &binary);
 
   // Copying binary over to buffer
@@ -35,7 +36,7 @@ void decode(const char *outputFile, const char *inputPath, const char *outputPat
   writeBinary(debugPath, outputFile, buffer, binarySize);
 
   // Writing original file
-  writeFile(outputPath, debugPath, buffer, binarySize);
+  writeFile(outputPath, buffer, binarySize);
 
   free(binary);
   free(buffer);
